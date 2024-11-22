@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trading Analysis Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Trading Analysis Tool</h1>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="symbol">Enter Trading Symbol (e.g., 'RELIANCE'):</label>
+                <input type="text" id="symbol" name="symbol" required placeholder="RELIANCE">
+            </div>
+
+            <div class="form-group">
+                <label for="interval">Select Interval:</label>
+                <select id="interval" name="interval" required>
+                    <option value="">-- Select Interval --</option>
+                    {% for interval in intervals %}
+                        <option value="{{ interval }}">{{ interval }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Get Analysis</button>
+        </form>
+
+        {% if error_message %}
+            <div class="error">
+                <p>{{ error_message }}</p>
+            </div>
+        {% endif %}
+
+        {% if analysis_result %}
+            <div class="results">
+                <h2>Analysis Results:</h2>
+                <h3>Summary:</h3>
+                <ul>
+                    {% for key, value in analysis_result.summary.items() %}
+                        <li><strong>{{ key }}:</strong> {{ value }}</li>
+                    {% endfor %}
+                </ul>
+
+                <h3>Indicators:</h3>
+                <ul>
+                    {% for indicator, value in analysis_result.indicators.items() %}
+                        <li><strong>{{ indicator }}:</strong> {{ value }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
